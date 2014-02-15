@@ -20,7 +20,7 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
     private boolean headerVisible = true;
 
     private int mHeaderHeight;
-    private int mLastDampedScroll;
+    private int mLastDampedScroll = 0;
     private int mCurrentAlpha = 0;
     private int mHeaderTop = 0;
 
@@ -49,6 +49,12 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
 
     public int getCurrentAlpha() {
         return mCurrentAlpha;
+    }
+
+    private boolean mReset = false;
+
+    public void reset(){
+        mReset = true;
     }
 
     @Override
@@ -83,17 +89,29 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
             // Header is visible
             if (!headerVisible && handleResume) {
                 mHeader.offsetTopAndBottom(mHeaderTop);
-                mHeaderTop = 0;
             }
+
             handleResume = false;
             headerVisible = true;
+
+            if (mReset) {
+                mHeader.offsetTopAndBottom(mHeaderTop);
+                mReset = false;
+                return;
+            }
 
             handleScroll(-topChild.getTop());
         } else {
             // Header is invisible
+            if (mReset) {
+                mHeader.offsetTopAndBottom(mHeaderTop);
+                mReset = false;
+            }
+
             if (headerVisible) {
                 mHeaderTop = mHeader.getTop();
             }
+
             headerVisible = false;
             mActionBarBackgroundDrawable.setAlpha(255);
         }
