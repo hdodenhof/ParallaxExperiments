@@ -1,0 +1,23 @@
+<resources>
+
+    <style name="Theme.TranslucentActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/Widget.ActionBar</item>
+    </style>
+
+    <style name="Theme.TranslucentActionBar.ActionBar" />
+
+    <style name="Theme.TranslucentActionBar.ActionBar.Overlay">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:actionBarStyle">@style/Widget.ActionBar.Transparent</item>
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="Widget.ActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/ab_solid</item>
+    </style>
+
+    <style name="Widget.ActionBar.Transparent">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+</resources>

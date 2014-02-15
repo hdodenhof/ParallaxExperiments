@@ -1,0 +1,19 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="de.hdodenhof.parallax.fragments.ParallaxListFragment">
+
+    <include layout="@layout/header" />
+
+    <de.hdodenhof.parallax.widgets.ParallaxListView
+        android:id="@android:id/list"
+        android:background="@android:color/transparent"
+        android:fadingEdge="none"
+        android:cacheColorHint="@null"
+        android:dividerHeight="1px"
+        android:divider="#FFEEEEEE"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</FrameLayout>

@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="de.hdodenhof.parallax.activities.MainActivity">
+
+    <item
+        android:id="@+id/action_list"
+        android:title="@string/action_listview"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_scroll"
+        android:title="@string/action_scrollview"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_dummy"
+        android:title="@string/action_dummy"
+        app:showAsAction="never" />
+</menu>
