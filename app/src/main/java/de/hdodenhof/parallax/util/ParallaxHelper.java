@@ -18,6 +18,7 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
 
     private boolean mHandleResume = false;
     private boolean mHeaderVisible = true;
+    private boolean mReset = false;
 
     private int mHeaderHeight;
     private int mLastDampedScroll = 0;
@@ -50,8 +51,6 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
     public int getCurrentAlpha() {
         return mCurrentAlpha;
     }
-
-    private boolean mReset = false;
 
     public void reset(){
         mReset = true;
