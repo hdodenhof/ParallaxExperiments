@@ -16,8 +16,8 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
     private View mHeader;
     private View mHeaderPlaceholder;
 
-    private boolean handleResume = false;
-    private boolean headerVisible = true;
+    private boolean mHandleResume = false;
+    private boolean mHeaderVisible = true;
 
     private int mHeaderHeight;
     private int mLastDampedScroll = 0;
@@ -44,7 +44,7 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
     }
 
     public void onPause(){
-        handleResume = true;
+        mHandleResume = true;
     }
 
     public int getCurrentAlpha() {
@@ -59,16 +59,16 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
 
     @Override
     public void onScrollChanged(ScrollView view, int l, int t, int oldl, int oldt) {
-        if (!headerVisible && handleResume) {
+        if (!mHeaderVisible && mHandleResume) {
             mHeader.offsetTopAndBottom(mHeaderTop);
             mHeaderTop = 0;
         }
-        handleResume = false;
+        mHandleResume = false;
 
         if (t < mHeaderHeight) {
-            headerVisible = true;
+            mHeaderVisible = true;
         } else {
-            headerVisible = false;
+            mHeaderVisible = false;
         }
 
         handleScroll(t);
@@ -87,12 +87,12 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
             return;
         } else if (topChild == mHeaderPlaceholder) {
             // Header is visible
-            if (!headerVisible && handleResume) {
+            if (!mHeaderVisible && mHandleResume) {
                 mHeader.offsetTopAndBottom(mHeaderTop);
             }
 
-            handleResume = false;
-            headerVisible = true;
+            mHandleResume = false;
+            mHeaderVisible = true;
 
             if (mReset) {
                 mHeader.offsetTopAndBottom(mHeaderTop);
@@ -108,11 +108,11 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
                 mReset = false;
             }
 
-            if (headerVisible) {
+            if (mHeaderVisible) {
                 mHeaderTop = mHeader.getTop();
             }
 
-            headerVisible = false;
+            mHeaderVisible = false;
             mActionBarBackgroundDrawable.setAlpha(255);
         }
     }
