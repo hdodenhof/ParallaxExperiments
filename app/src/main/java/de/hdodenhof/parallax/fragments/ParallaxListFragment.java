@@ -2,7 +2,6 @@ package de.hdodenhof.parallax.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,17 +46,7 @@ public class ParallaxListFragment extends ListFragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (mListView.isIdle()){
-                    mAdapter.setSize(500);
-                } else {
-                    mListView.setOnIdleListener(new ParallaxListView.OnIdleListener() {
-                        @Override
-                        public void onIdle() {
-                            mAdapter.setSize(500);
-                            mListView.setOnIdleListener(null);
-                        }
-                    });
-                }
+                mAdapter.setSize(500);
             }
         }, 5000);
 
@@ -103,12 +92,6 @@ public class ParallaxListFragment extends ListFragment {
         mListView.setOnScrollListener(mParallaxHelper);
 
         mAdapter = new SimpleArrayAdapter(getActivity(), 100);
-        mAdapter.registerDataSetObserver(new DataSetObserver() {
-            @Override
-            public void onChanged() {
-                mParallaxHelper.reset();
-            }
-        });
         getListView().setAdapter(mAdapter);
     }
 

@@ -52,10 +52,6 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
         return mCurrentAlpha;
     }
 
-    public void reset(){
-        mReset = true;
-    }
-
     @Override
     public void onScrollChanged(ScrollView view, int l, int t, int oldl, int oldt) {
         if (!mHeaderVisible && mHandleResume) {
@@ -93,20 +89,9 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
             mHandleResume = false;
             mHeaderVisible = true;
 
-            if (mReset) {
-                mHeader.offsetTopAndBottom(mHeaderTop);
-                mReset = false;
-                return;
-            }
-
             handleScroll(-topChild.getTop());
         } else {
             // Header is invisible
-            if (mReset) {
-                mHeader.offsetTopAndBottom(mHeaderTop);
-                mReset = false;
-            }
-
             if (mHeaderVisible) {
                 mHeaderTop = mHeader.getTop();
             }
