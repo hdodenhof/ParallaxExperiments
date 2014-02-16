@@ -2,6 +2,7 @@ package de.hdodenhof.parallax.util;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.ScrollView;
 
@@ -17,26 +18,35 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
     private View mHeaderPlaceholder;
 
     private boolean mHandleResume = false;
-    private boolean mHeaderVisible = true;
 
-    private int mHeaderHeight;
     private int mLastDampedScroll = 0;
     private int mCurrentAlpha = 0;
     private int mHeaderTop = 0;
 
     public ParallaxHelper(MainActivity activity){
         mActivity = activity;
-        mHeaderHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.header_height);
     }
 
-    public void onCreateView(View rootView){
+    public void onCreateView(final View rootView){
         onCreateView(rootView, null);
     }
 
-    public void onCreateView(View rootView, View headerPlaceholder){
+    public void onCreateView(final View rootView, View headerPlaceholder){
         mActionBarBackgroundDrawable = mActivity.getActionBarBackgroundDrawable();
         mHeader = rootView.findViewById(R.id.header);
         mHeaderPlaceholder = headerPlaceholder;
+
+        if (mHandleResume && mHeaderPlaceholder == null /* ScrollView */){
+            rootView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    rootView.getViewTreeObserver().removeOnPreDrawListener(this);
+                    mHeader.offsetTopAndBottom(mHeaderTop);
+                    mHandleResume = false;
+                    return true;
+                }
+            });
+        }
     }
 
     public void onResume(){
@@ -48,17 +58,6 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
 
     @Override
     public void onScrollChanged(ScrollView view, int l, int t, int oldl, int oldt) {
-        if (!mHeaderVisible && mHandleResume) {
-            mHeader.offsetTopAndBottom(mHeaderTop);
-        }
-        mHandleResume = false;
-
-        if (t < mHeaderHeight) {
-            mHeaderVisible = true;
-        } else {
-            mHeaderVisible = false;
-        }
-
         handleScroll(t);
     }
 
@@ -73,24 +72,20 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
         if (topChild == null) {
             // List is not initialized
             return;
-        } else if (topChild == mHeaderPlaceholder) {
-            // Header is visible
-            if (!mHeaderVisible && mHandleResume) {
-                mHeader.offsetTopAndBottom(mHeaderTop);
-            }
-
-            mHandleResume = false;
-            mHeaderVisible = true;
-
-            handleScroll(-topChild.getTop());
         } else {
-            // Header is invisible
-            if (mHeaderVisible) {
-                mHeaderTop = mHeader.getTop();
+            if (mHandleResume) {
+                mHeader.offsetTopAndBottom(mHeaderTop);
+                mHandleResume = false;
             }
 
-            mHeaderVisible = false;
-            mActionBarBackgroundDrawable.setAlpha(255);
+            if (topChild == mHeaderPlaceholder) {
+                // Header is visible
+                handleScroll(-topChild.getTop());
+            } else {
+                // Header is invisible
+                mHeaderTop = mHeader.getTop();
+                mActionBarBackgroundDrawable.setAlpha(255);
+            }
         }
     }
 
