@@ -1,6 +1,7 @@
 package de.hdodenhof.parallax.widgets;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.widget.AbsListView;
 import android.widget.ListView;
@@ -67,7 +68,17 @@ public class ParallaxListView extends ListView implements AbsListView.OnScrollLi
 
         if (scrollState == SCROLL_STATE_IDLE && mScrollState != SCROLL_STATE_IDLE) {
             if (mOnIdleListener != null) {
-                mOnIdleListener.onIdle();
+                // Handle fling direction change
+                Handler handler = getHandler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Still idle
+                        if (mScrollState == SCROLL_STATE_IDLE && mOnIdleListener != null){
+                            mOnIdleListener.onIdle();
+                        }
+                    }
+                }, 50);
             }
         }
 
