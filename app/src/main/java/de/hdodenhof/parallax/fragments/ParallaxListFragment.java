@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +15,7 @@ import de.hdodenhof.parallax.activities.MainActivity;
 import de.hdodenhof.parallax.util.ParallaxHelper;
 import de.hdodenhof.parallax.widgets.ParallaxListView;
 
-public class ParallaxListFragment extends ListFragment {
+public class ParallaxListFragment extends Fragment {
 
     private View mHeaderPlaceholder;
     private ParallaxHelper mParallaxHelper;
@@ -51,6 +51,8 @@ public class ParallaxListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
 
+        mListView = (ParallaxListView) rootView.findViewById(android.R.id.list);
+
         mHeaderPlaceholder = inflater.inflate(R.layout.header_placeholder, null);
         mParallaxHelper.onCreateView(rootView, mHeaderPlaceholder);
 
@@ -73,13 +75,11 @@ public class ParallaxListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mListView = (ParallaxListView) getListView();
-
         mListView.addHeaderView(mHeaderPlaceholder);
         mListView.setOnScrollListener(mParallaxHelper);
 
         mAdapter = new SimpleArrayAdapter(getActivity(), 100);
-        getListView().setAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
     }
 
     private class SimpleArrayAdapter extends ArrayAdapter<String> {

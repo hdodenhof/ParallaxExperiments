@@ -22,7 +22,7 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
     private View mHeader;
     private View mHeaderPlaceholder;
     private Type mType;
-    
+
     private boolean mHandleResume = false;
 
     private int mLastDampedScroll = 0;
