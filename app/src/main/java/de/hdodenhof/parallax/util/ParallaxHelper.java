@@ -1,6 +1,7 @@
 package de.hdodenhof.parallax.util;
 
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
@@ -45,6 +46,10 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
 
         if (mType == Type.LISTVIEW && mHeaderPlaceholder == null){
             throw new IllegalArgumentException("'headerPlaceholder' must not be null");
+        }
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN) {
+            mActionBarBackgroundDrawable.setCallback(mDrawableCallback);
         }
 
         if (mHandleResume && mType == Type.SCROLLVIEW){
@@ -118,5 +123,21 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
         mHeader.offsetTopAndBottom(offset);
         mHeaderTop = mHeader.getTop();
     }
+
+    private Drawable.Callback mDrawableCallback = new Drawable.Callback() {
+
+        @Override
+        public void invalidateDrawable(Drawable who) {
+            mActivity.getSupportActionBar().setBackgroundDrawable(who);
+        }
+
+        @Override
+        public void scheduleDrawable(Drawable who, Runnable what, long when) {
+        }
+
+        @Override
+        public void unscheduleDrawable(Drawable who, Runnable what) {
+        }
+    };
 
 }
