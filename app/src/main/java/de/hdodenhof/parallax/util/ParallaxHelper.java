@@ -117,8 +117,7 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
         final float ratio = (float) Math.min(Math.max(scrollPosition, 0), headerHeight) / headerHeight;
         final int newAlpha = (int) (ratio * 255);
 
-        mActionBarBackgroundDrawable.setAlpha(newAlpha);
-        mCurrentAlpha = newAlpha;
+        setActionBarAlpha(newAlpha);
 
         // parallax
         int dampedScroll = (int) (scrollPosition * 0.5f);
@@ -127,6 +126,15 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
 
         mHeader.offsetTopAndBottom(offset);
         mHeaderTop = mHeader.getTop();
+    }
+
+    public void setActionBarAlpha(int alpha) {
+        mActionBarBackgroundDrawable.setAlpha(alpha);
+        mCurrentAlpha = alpha;
+    }
+
+    public int getActionBarAlpha() {
+        return  mCurrentAlpha;
     }
 
     private Drawable.Callback mDrawableCallback = new Drawable.Callback() {
