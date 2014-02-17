@@ -29,7 +29,7 @@ public class ParallaxListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mParallaxHelper = new ParallaxHelper((MainActivity) getActivity());
+        mParallaxHelper = new ParallaxHelper((MainActivity) getActivity(), ParallaxHelper.Type.LISTVIEW);
     }
 
     @Override

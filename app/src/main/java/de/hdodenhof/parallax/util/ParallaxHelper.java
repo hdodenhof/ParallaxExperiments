@@ -12,19 +12,26 @@ import de.hdodenhof.parallax.widgets.ParallaxScrollView;
 
 public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListener, AbsListView.OnScrollListener {
 
+    public static enum Type {
+        SCROLLVIEW,
+        LISTVIEW
+    }
+
     private MainActivity mActivity;
     private Drawable mActionBarBackgroundDrawable;
     private View mHeader;
     private View mHeaderPlaceholder;
-
+    private Type mType;
+    
     private boolean mHandleResume = false;
 
     private int mLastDampedScroll = 0;
     private int mCurrentAlpha = 0;
     private int mHeaderTop = 0;
 
-    public ParallaxHelper(MainActivity activity){
+    public ParallaxHelper(MainActivity activity, Type type){
         mActivity = activity;
+        mType = type;
     }
 
     public void onCreateView(final View rootView){
@@ -36,7 +43,11 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
         mHeader = rootView.findViewById(R.id.header);
         mHeaderPlaceholder = headerPlaceholder;
 
-        if (mHandleResume && mHeaderPlaceholder == null /* ScrollView */){
+        if (mType == Type.LISTVIEW && mHeaderPlaceholder == null){
+            throw new IllegalArgumentException("'headerPlaceholder' must not be null");
+        }
+
+        if (mHandleResume && mType == Type.SCROLLVIEW){
             rootView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
