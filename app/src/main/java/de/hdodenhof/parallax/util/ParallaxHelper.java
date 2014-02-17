@@ -96,7 +96,10 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
             return;
         } else {
             if (mHandleResume) {
-                mHeader.offsetTopAndBottom(mHeaderTop);
+                int headerTopCurrent = mHeader.getTop();
+                if (headerTopCurrent != mHeaderTop) {
+                    mHeader.offsetTopAndBottom(mHeaderTop - headerTopCurrent);
+                }
                 mHandleResume = false;
             }
 
