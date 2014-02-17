@@ -2,7 +2,6 @@ package de.hdodenhof.parallax.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
@@ -19,13 +18,10 @@ import de.hdodenhof.parallax.widgets.ParallaxListView;
 public class ParallaxListFragment extends ListFragment {
 
     private View mHeaderPlaceholder;
-    private Drawable mActionBarBackgroundDrawable;
     private ParallaxHelper mParallaxHelper;
 
     private ParallaxListView mListView;
     private SimpleArrayAdapter mAdapter;
-
-    private int mCurrentAlpha = 0;
 
     public ParallaxListFragment() {
     }
@@ -39,7 +35,6 @@ public class ParallaxListFragment extends ListFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mActionBarBackgroundDrawable = ((MainActivity) activity).getActionBarBackgroundDrawable();
 
         // Simulate adapter data refresh
         Handler handler = new Handler();
@@ -50,12 +45,6 @@ public class ParallaxListFragment extends ListFragment {
             }
         }, 5000);
 
-    }
-
-    @Override
-    public void onDetach() {
-        mActionBarBackgroundDrawable = null;
-        super.onDetach();
     }
 
     @Override
@@ -72,12 +61,10 @@ public class ParallaxListFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         mParallaxHelper.onResume();
-        mActionBarBackgroundDrawable.setAlpha(mCurrentAlpha);
     }
 
     @Override
     public void onPause() {
-        mCurrentAlpha = mParallaxHelper.getCurrentAlpha();
         mParallaxHelper.onPause();
         super.onPause();
     }

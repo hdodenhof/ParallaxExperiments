@@ -50,6 +50,7 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
     }
 
     public void onResume(){
+        mActionBarBackgroundDrawable.setAlpha(mCurrentAlpha);
     }
 
     public void onPause(){
@@ -105,10 +106,6 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
 
         mHeader.offsetTopAndBottom(offset);
         mHeaderTop = mHeader.getTop();
-    }
-
-    public int getCurrentAlpha() {
-        return mCurrentAlpha;
     }
 
 }

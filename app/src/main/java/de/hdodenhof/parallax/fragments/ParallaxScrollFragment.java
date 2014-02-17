@@ -1,7 +1,5 @@
 package de.hdodenhof.parallax.fragments;
 
-import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,11 +13,8 @@ import de.hdodenhof.parallax.widgets.ParallaxScrollView;
 
 public class ParallaxScrollFragment extends Fragment {
 
-    private Drawable mActionBarBackgroundDrawable;
     private ParallaxScrollView mScrollView;
     private ParallaxHelper mParallaxHelper;
-
-    private int mCurrentAlpha = 0;
 
     public ParallaxScrollFragment() {
     }
@@ -47,27 +42,13 @@ public class ParallaxScrollFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActionBarBackgroundDrawable = ((MainActivity) activity).getActionBarBackgroundDrawable();
-    }
-
-    @Override
-    public void onDetach() {
-        mActionBarBackgroundDrawable = null;
-        super.onDetach();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         mParallaxHelper.onResume();
-        mActionBarBackgroundDrawable.setAlpha(mCurrentAlpha);
     }
 
     @Override
     public void onPause() {
-        mCurrentAlpha = mParallaxHelper.getCurrentAlpha();
         mParallaxHelper.onPause();
         super.onPause();
     }
