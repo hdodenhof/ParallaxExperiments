@@ -2,20 +2,17 @@ package de.hdodenhof.parallax.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import de.hdodenhof.parallax.R;
-import de.hdodenhof.parallax.activities.MainActivity;
 
 public class DummyFragment extends ListFragment {
-
-    private Drawable mActionBarBackgroundDrawable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -25,19 +22,7 @@ public class DummyFragment extends ListFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mActionBarBackgroundDrawable = ((MainActivity) activity).getActionBarBackgroundDrawable();
-    }
-
-    @Override
-    public void onDetach() {
-        mActionBarBackgroundDrawable = null;
-        super.onDetach();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mActionBarBackgroundDrawable.setAlpha(255);
+        ((ActionBarActivity) activity).getSupportActionBar().setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.ab_solid));
     }
 
     @Override

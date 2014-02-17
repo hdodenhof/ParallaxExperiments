@@ -2,6 +2,8 @@ package de.hdodenhof.parallax.util;
 
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
@@ -18,7 +20,7 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
         LISTVIEW
     }
 
-    private MainActivity mActivity;
+    private ActionBar mActionBar;
     private Drawable mActionBarBackgroundDrawable;
     private View mHeader;
     private View mHeaderPlaceholder;
@@ -30,9 +32,11 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
     private int mCurrentAlpha = 0;
     private int mHeaderTop = 0;
 
-    public ParallaxHelper(MainActivity activity, Type type){
-        mActivity = activity;
+    public ParallaxHelper(ActionBarActivity activity, Type type){
+        mActionBar = activity.getSupportActionBar();
         mType = type;
+
+        mActionBarBackgroundDrawable = activity.getResources().getDrawable(R.drawable.ab_solid);
     }
 
     public void onCreateView(final View rootView){
@@ -40,7 +44,6 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
     }
 
     public void onCreateView(final View rootView, View headerPlaceholder){
-        mActionBarBackgroundDrawable = mActivity.getActionBarBackgroundDrawable();
         mHeader = rootView.findViewById(R.id.header);
         mHeaderPlaceholder = headerPlaceholder;
 
@@ -51,6 +54,8 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN) {
             mActionBarBackgroundDrawable.setCallback(mDrawableCallback);
         }
+
+        mActionBar.setBackgroundDrawable(mActionBarBackgroundDrawable);
 
         if (mHandleResume && mType == Type.SCROLLVIEW){
             rootView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -108,7 +113,7 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
 
     private void handleScroll(int scrollPosition) {
         // ActionBar alpha
-        final int headerHeight = mHeader.getHeight() - mActivity.getSupportActionBar().getHeight();
+        final int headerHeight = mHeader.getHeight() - mActionBar.getHeight();
         final float ratio = (float) Math.min(Math.max(scrollPosition, 0), headerHeight) / headerHeight;
         final int newAlpha = (int) (ratio * 255);
 
@@ -128,7 +133,7 @@ public class ParallaxHelper implements ParallaxScrollView.OnScrollChangedListene
 
         @Override
         public void invalidateDrawable(Drawable who) {
-            mActivity.getSupportActionBar().setBackgroundDrawable(who);
+            mActionBar.setBackgroundDrawable(who);
         }
 
         @Override

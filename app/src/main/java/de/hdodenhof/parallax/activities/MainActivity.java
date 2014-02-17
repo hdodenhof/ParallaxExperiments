@@ -1,6 +1,5 @@
 package de.hdodenhof.parallax.activities;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -13,8 +12,6 @@ import de.hdodenhof.parallax.fragments.ParallaxScrollFragment;
 
 public class MainActivity extends ActionBarActivity {
 
-    private Drawable mActionBarBackgroundDrawable;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,11 +20,6 @@ public class MainActivity extends ActionBarActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.container, new ParallaxListFragment()).commit();
         }
-
-        mActionBarBackgroundDrawable = getResources().getDrawable(R.drawable.ab_solid);
-        mActionBarBackgroundDrawable.setAlpha(0);
-
-        getSupportActionBar().setBackgroundDrawable(mActionBarBackgroundDrawable);
     }
 
     @Override
@@ -52,10 +44,6 @@ public class MainActivity extends ActionBarActivity {
 
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public Drawable getActionBarBackgroundDrawable() {
-        return mActionBarBackgroundDrawable;
     }
 
 }
